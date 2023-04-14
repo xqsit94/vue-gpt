@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import GptChat from "./components/GptChat.vue";
+  import GptChat from './components/GptChat.vue'
 </script>
 
 <template>

@@ -1,26 +1,21 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, Ref } from "vue";
+  import { onBeforeUnmount, onMounted, ref, Ref } from 'vue'
 
-const loadingText: Ref<string> = ref("Loading");
-const interval: Ref<number> = ref(0);
+  const loadingText: Ref<string> = ref('Loading')
+  const interval: Ref<number> = ref(0)
 
-onMounted(() => {
-  const loadingTexts = [
-    "Loading",
-    "Loading.",
-    "Loading..",
-    "Loading...",
-  ];
-  let i = 0;
-  interval.value = setInterval(() => {
-    loadingText.value = loadingTexts[i];
-    i = (i + 1) % loadingTexts.length;
-  }, 500);
-});
+  onMounted(() => {
+    const loadingTexts = ['Loading', 'Loading.', 'Loading..', 'Loading...']
+    let i = 0
+    interval.value = setInterval(() => {
+      loadingText.value = loadingTexts[i]
+      i = (i + 1) % loadingTexts.length
+    }, 500)
+  })
 
-onBeforeUnmount(() => {
-  clearInterval(interval.value);
-});
+  onBeforeUnmount(() => {
+    clearInterval(interval.value)
+  })
 </script>
 
 <template>

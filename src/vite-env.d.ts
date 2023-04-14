@@ -1,31 +1,26 @@
 /// <reference types="vite/client" />
 
 interface ErrorResponse {
-  error: ErrorData;
+  error: ErrorData
 }
 interface ResponseContentData {
-  role: string;
-  content: string;
+  role: string
+  content: string
 }
 
 type ErrorData = {
-  code: string | null;
-  message: string;
-  param: string | null;
-  type: string;
-};
+  code: string | null
+  message: string
+  param: string | null
+  type: string
+}
 
 type ContentData = {
-  question: string;
-  role: string;
-  answer: string;
-};
-
-enum Role {
-  User = "user",
-  Error = "error",
+  question: string
+  role: string
+  answer: string
 }
 
 interface CodeBlock {
-  codeBlock: string;
+  codeBlock: string
 }
