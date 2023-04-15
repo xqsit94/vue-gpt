@@ -101,6 +101,7 @@
   }
 
   const instanceOfCodeBlock = (object: any): object is CodeBlock => {
+    if (typeof object !== 'object') return false
     return 'codeBlock' in object
   }
 
