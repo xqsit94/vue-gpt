@@ -39,6 +39,8 @@
       answer: 'Loading...',
     })
 
+    scrollToBottom()
+
     const openai: OpenAIApi = new OpenAIApi(configuration)
 
     await openai
@@ -67,6 +69,7 @@
       .finally(() => {
         isLoading.value = false
         query.value = ''
+        scrollToBottom()
       })
   }
 
@@ -100,43 +103,48 @@
   const instanceOfCodeBlock = (object: any): object is CodeBlock => {
     return 'codeBlock' in object
   }
+
+  const scrollToBottom = (): void => {
+    window.scrollTo(0, document.body.scrollHeight)
+  }
 </script>
 
 <template>
-  <div class="flex justify-center mt-4 mb-36">
-    <div class="w-1/2">
-      <div v-for="(content, i) in responseContent" :key="i">
-        <div class="flex justify-end mt-2">
-          <div class="bg-blue-500 text-white p-4 rounded-lg">
-            {{ content.question }}
-          </div>
+  <div
+    v-if="responseContent.length > 0"
+    class="mt-4 mb-48 p-4 card bg-base-200 shadow-xl"
+  >
+    <div v-for="(content, i) in responseContent" :key="i">
+      <div class="chat chat-end">
+        <div class="bg-blue-500 text-white chat-bubble">
+          {{ content.question }}
         </div>
-        <div class="flex justify-start mt-2">
-          <div
-            v-if="isLoading && i + 1 === responseContent.length"
-            class="bg-gray-500 text-white p-4 rounded-lg"
+      </div>
+      <div class="chat chat-start">
+        <div
+          v-if="isLoading && i + 1 === responseContent.length"
+          class="bg-gray-500 text-white chat-bubble"
+        >
+          <LoadingText />
+        </div>
+        <div
+          v-else-if="content.role === Role.Error"
+          class="bg-error text-white chat-bubble"
+        >
+          {{ content.answer }}
+        </div>
+        <div v-else class="bg-gray-500 text-white chat-bubble prose">
+          <template
+            v-for="(block, index) in splitContent(content.answer)"
+            :key="index"
           >
-            <LoadingText />
-          </div>
-          <div
-            v-else-if="content.role === Role.Error"
-            class="bg-error text-white p-4 rounded-lg"
-          >
-            {{ content.answer }}
-          </div>
-          <div v-else class="bg-gray-500 text-white p-4 rounded-lg prose">
-            <template
-              v-for="(block, index) in splitContent(content.answer)"
-              :key="index"
-            >
-              <component
-                v-if="instanceOfCodeBlock(block)"
-                :is="HighlightJs"
-                :code="block.codeBlock"
-              />
-              <p v-else>{{ block }}</p>
-            </template>
-          </div>
+            <component
+              v-if="instanceOfCodeBlock(block)"
+              :is="HighlightJs"
+              :code="block.codeBlock"
+            />
+            <p v-else>{{ block }}</p>
+          </template>
         </div>
       </div>
     </div>
