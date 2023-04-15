@@ -1,5 +1,7 @@
 # Simple ChatGPT API Integration using Vue 3 and TypeScript
 
+![](/gif/demo.gif)
+
 ## Setup
 
 ```bazaar
